@@ -23,3 +23,9 @@ It also requires that you run it as root unless you want to spend an afternoon p
 
 * Use arrow keys aim.
 * Press return to fire.
+
+## Controlling Missile Launcher from the terminal:
+
+   cd stormLauncher
+   chmod +x turret.py
+   sudo ./turret.py <"left" | "right" | "up" | "down"> <duration of movement in milliseconds>
