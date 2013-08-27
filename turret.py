@@ -86,12 +86,8 @@ if __name__ == '__main__':
       sys.exit()
    
    command = str.lower(cmdargs[1])
-   
-   if len(sys.argv) == 3:
-      movement = int(cmdargs[2]) / 1000.0
-   
+   movement = int(cmdargs[2]) / 1000.0
    launchControl().setSound(True)
-   
    currentTime = time.time();
    
    if command == "left":
