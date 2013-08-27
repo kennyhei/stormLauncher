@@ -19,9 +19,10 @@ class launchControl():
       if self.dev.is_kernel_driver_active(0) is True:
          self.dev.detach_kernel_driver(0)
       self.dev.set_configuration()
+      
+      self.hasSound = False
 
    def loopMovement(self, movement):
-      
       while (True):
          if (time.time() - currentTime) > movement:
             self.turretStop()
@@ -56,7 +57,7 @@ class launchControl():
       self.dev.ctrl_transfer(0x21, 0x09, 0, 0, [0x02, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
    def turretFire(self):
-      self.message1.set("FIRE!")
+      print("FIRE!")
 
       if os.path.isfile(wavFile):
          if self.hasSound == True:
@@ -81,7 +82,10 @@ if __name__ == '__main__':
    # Get the arguments list 
    cmdargs = sys.argv
    
-   if len(sys.argv) < 3:
+   if total == 2 and str.lower(cmdargs[1]) == "fire":
+      launchControl().turretFire()
+   
+   if total < 3:
       print("sudo ./turret.py <\"left\" | \"right\" | \"up\" | \"down\"> <duration of movement in milliseconds>")
       sys.exit()
    
@@ -101,6 +105,3 @@ if __name__ == '__main__':
 
    if command == "down":
        launchControl().turretDown(movement)
-       
-   if command == "fire":
-       launchControl().turretFire()
