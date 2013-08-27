@@ -77,7 +77,7 @@ def commandControl(cmdargs):
    # Get the total number of args passed to the turret.py
    total = len(cmdargs)
    
-   if total == 2 and str.lower(cmdargs[1]) == "fire":
+   if total >= 2 and str.lower(cmdargs[1]) == "fire":
       launchControl().turretFire()
       return
    
@@ -86,6 +86,7 @@ def commandControl(cmdargs):
       return
       
    command = str.lower(cmdargs[1])
+   
    movement = int(cmdargs[2]) / 1000.0
    launchControl().setSound(True)
    
