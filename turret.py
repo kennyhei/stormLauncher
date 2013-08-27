@@ -84,24 +84,25 @@ if __name__ == '__main__':
    
    if total == 2 and str.lower(cmdargs[1]) == "fire":
       launchControl().turretFire()
+   else:
+      
+      if total < 3:
+         print("sudo ./turret.py <\"left\" | \"right\" | \"up\" | \"down\"> <duration of movement in milliseconds>")
+         sys.exit()
+      
+      command = str.lower(cmdargs[1])
+      movement = int(cmdargs[2]) / 1000.0
+      launchControl().setSound(True)
+      currentTime = time.time();
+      
+      if command == "left":
+          launchControl().turretLeft(movement)
+    
+      if command == "right":
+          launchControl().turretRight(movement)
+          
+      if command == "up":
+          launchControl().turretUp(movement)
    
-   if total < 3:
-      print("sudo ./turret.py <\"left\" | \"right\" | \"up\" | \"down\"> <duration of movement in milliseconds>")
-      sys.exit()
-   
-   command = str.lower(cmdargs[1])
-   movement = int(cmdargs[2]) / 1000.0
-   launchControl().setSound(True)
-   currentTime = time.time();
-   
-   if command == "left":
-       launchControl().turretLeft(movement)
- 
-   if command == "right":
-       launchControl().turretRight(movement)
-       
-   if command == "up":
-       launchControl().turretUp(movement)
-
-   if command == "down":
-       launchControl().turretDown(movement)
+      if command == "down":
+          launchControl().turretDown(movement)
