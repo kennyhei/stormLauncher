@@ -9,7 +9,7 @@ import usb.core
 wavFile  = "warcry.wav"
 
 cmdargs = []
-currentTime = 0
+initialTime = 0
 
 class launchControl():
    def __init__(self):
@@ -24,7 +24,7 @@ class launchControl():
 
    def loopMovement(self, movement):
       while (True):
-         if (time.time() - currentTime) > movement:
+         if (time.time() - initialTime) > movement:
             self.turretStop()
             break
 
@@ -71,38 +71,45 @@ class launchControl():
    def setSound(self, soundOn):
       self.hasSound = soundOn
 
+
+def commandControl(cmdargs):
+   
+   # Get the total number of args passed to the turret.py
+   total = len(cmdargs)
+   
+   if total == 2 and str.lower(cmdargs[1]) == "fire":
+      launchControl().turretFire()
+      return
+   
+   if total < 3:
+      print("sudo ./turret.py <\"left\" | \"right\" | \"up\" | \"down\"> <duration of movement in milliseconds>")
+      return
+      
+   command = str.lower(cmdargs[1])
+   movement = int(cmdargs[2]) / 1000.0
+   launchControl().setSound(True)
+   
+   global initialTime
+   initialTime = time.time();
+      
+   if command == "left":
+      launchControl().turretLeft(movement)
+    
+   if command == "right":
+      launchControl().turretRight(movement)
+          
+   if command == "up":
+      launchControl().turretUp(movement)
+   
+   if command == "down":
+      launchControl().turretDown(movement)
+
 if __name__ == '__main__':
 
    if not os.geteuid() == 0:
        sys.exit("Script must be run as root.")
-    
-   # Get the total number of args passed to the turret.py
-   total = len(sys.argv)
 
    # Get the arguments list 
    cmdargs = sys.argv
    
-   if total == 2 and str.lower(cmdargs[1]) == "fire":
-      launchControl().turretFire()
-   else:
-      
-      if total < 3:
-         print("sudo ./turret.py <\"left\" | \"right\" | \"up\" | \"down\"> <duration of movement in milliseconds>")
-         sys.exit()
-      
-      command = str.lower(cmdargs[1])
-      movement = int(cmdargs[2]) / 1000.0
-      launchControl().setSound(True)
-      currentTime = time.time();
-      
-      if command == "left":
-          launchControl().turretLeft(movement)
-    
-      if command == "right":
-          launchControl().turretRight(movement)
-          
-      if command == "up":
-          launchControl().turretUp(movement)
-   
-      if command == "down":
-          launchControl().turretDown(movement)
+   commandControl(cmdargs)
