@@ -6,8 +6,6 @@ import time
 import pygame
 import usb.core
 
-wavFile  = "warcry.wav"
-
 cmdargs = []
 initialTime = 0
 
@@ -19,8 +17,6 @@ class launchControl():
       if self.dev.is_kernel_driver_active(0) is True:
          self.dev.detach_kernel_driver(0)
       self.dev.set_configuration()
-      
-      self.hasSound = False
 
    def loopMovement(self, movement):
       while (True):
@@ -59,17 +55,7 @@ class launchControl():
    def turretFire(self):
       print("FIRE!")
 
-      if os.path.isfile(wavFile):
-         if self.hasSound == True:
-            pygame.init()
-            sound = pygame.mixer.Sound("warcry.wav")
-            sound.play()
-            time.sleep(3)
-
       self.dev.ctrl_transfer(0x21, 0x09, 0, 0, [0x02, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
-
-   def setSound(self, soundOn):
-      self.hasSound = soundOn
 
 
 def commandControl(cmdargs):
@@ -88,7 +74,6 @@ def commandControl(cmdargs):
    command = str.lower(cmdargs[1])
    
    movement = int(cmdargs[2]) / 1000.0
-   launchControl().setSound(True)
    
    global initialTime
    initialTime = time.time();
